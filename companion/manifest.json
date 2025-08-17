@@ -1,0 +1,26 @@
+{
+	"id": "keyfree-companion",
+	"name": "KeyFree Companion",
+	"shortname": "keyfree",
+	"description": "Companion module for KeyFree - a powerful keyboard automation tool with web API interface",
+	"version": "0.1.0",
+	"license": "MIT",
+	"repository": "git+https://github.com/nerif-tafu/companion-module-keyfree-companion.git",
+	"bugs": "https://github.com/nerif-tafu/companion-module-keyfree-companion/issues",
+	"maintainers": [
+		{
+			"name": "nerif-tafu",
+			"email": "nerif-tafu@github.com"
+		}
+	],
+	"runtime": {
+		"type": "node22",
+		"api": "nodejs-ipc",
+		"apiVersion": "0.0.0",
+		"entrypoint": "../main.js"
+	},
+	"legacyIds": [],
+	"manufacturer": "KeyFree",
+	"products": ["KeyFree Companion"],
+	"keywords": ["keyboard", "automation", "hotkeys", "macro"]
+}
