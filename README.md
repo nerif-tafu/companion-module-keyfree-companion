@@ -8,7 +8,7 @@ A Companion module for [KeyFree Companion](https://github.com/nerif-tafu/keyfree
 - **Key Combinations**: Support for 2, 3, and 4-key combinations
 - **Key Down/Up Control**: Individual key press and release control
 - **String Typing**: Type text strings with natural timing
-- **Common Shortcuts**: Pre-configured actions for copy, paste, save, etc.
+- **Presets**: 480 pre-configured presets for F13-F24 + arrow keys + keypad combinations
 - **Connection Status**: Real-time feedback on connection status
 - **Variables**: Track connection status, server URL, and last action
 
@@ -58,7 +58,7 @@ A Companion module for [KeyFree Companion](https://github.com/nerif-tafu/keyfree
 - `0` through `9`
 
 ### Function Keys
-- `f1` through `f12`
+- `f1` through `f24`
 
 ### Modifier Keys
 - `ctrl`, `left_ctrl`, `right_ctrl`
@@ -72,6 +72,10 @@ A Companion module for [KeyFree Companion](https://github.com/nerif-tafu/keyfree
 - `home`, `end`, `pageup`, `pagedown`
 - Arrow keys: `up`, `down`, `left`, `right`
 
+### Keypad Keys
+- `keypad0` through `keypad9`
+- `keypad_enter`, `keypad_plus`, `keypad_minus`, `keypad_multiply`, `keypad_divide`, `keypad_decimal`
+
 ### Punctuation and Symbols
 - All common punctuation and symbols
 
@@ -79,9 +83,28 @@ A Companion module for [KeyFree Companion](https://github.com/nerif-tafu/keyfree
 
 ### Basic Usage
 
-1. **Copy Text**: Use the "Copy (Ctrl+C)" action
-2. **Paste Text**: Use the "Paste (Ctrl+V)" action
-3. **Take Screenshot**: Use the "Screenshot" action
+1. **Copy Text**: Use "Two-Key Combination" with `ctrl` + `c`
+2. **Paste Text**: Use "Two-Key Combination" with `ctrl` + `v`
+3. **Save File**: Use "Three-Key Combination" with `ctrl` + `shift` + `s`
+
+### Preset Usage
+
+The module includes 480 pre-configured presets organized in 12 pages:
+
+**Pages 1-12 (F13-F24 combinations):**
+Each page contains 4 rows with 10 presets each (40 presets per page):
+- Row 1: F13-F24 + UP + Keypad0-9
+- Row 2: F13-F24 + DOWN + Keypad0-9
+- Row 3: F13-F24 + LEFT + Keypad0-9
+- Row 4: F13-F24 + RIGHT + Keypad0-9
+
+**Example presets:**
+- Page 1: F13 + UP/DOWN/LEFT/RIGHT + Keypad0-9
+- Page 2: F14 + UP/DOWN/LEFT/RIGHT + Keypad0-9
+- Page 3: F15 + UP/DOWN/LEFT/RIGHT + Keypad0-9
+- ...continuing through F24
+
+Simply drag and drop these presets onto your button banks for instant access to these key combinations.
 
 ### Custom Key Combinations
 
@@ -150,9 +173,19 @@ For issues and questions:
 
 ## Changelog
 
+### v0.3.0
+- Added support for F13-F24 function keys
+- Extended keypad support to keypad0-keypad9 (full numeric keypad)
+
+### v0.2.0
+- Added 84 pre-configured presets for F13/F14/F15 + arrow keys + keypad combinations
+- Added support for F13, F14, and F15 function keys
+- Added support for keypad keys (keypad0-keypad9 and keypad operators)
+- Organized presets into 3 pages with 4 rows each
+- Improved documentation and examples
+
 ### v0.1.0
 - Initial release
 - Basic keyboard automation support
 - Connection status feedback
-- Common shortcuts
 - Variables for tracking
