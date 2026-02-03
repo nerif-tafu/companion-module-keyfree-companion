@@ -2,6 +2,8 @@ name: Release
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
 
@@ -26,16 +28,27 @@ jobs:
       - name: Build package
         run: npx companion-module-build
 
-      - name: Get package filename
+      - name: Get package filename and version
         id: pkg
         run: |
           TGZ=$(ls *.tgz)
           echo "filename=$TGZ" >> $GITHUB_OUTPUT
+          echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Delete existing latest release (on main only)
+        if: github.ref_type != 'tag'
+        run: |
+          gh release delete latest --yes --cleanup-tag 2>/dev/null || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}
+          name: ${{ github.ref_type == 'tag' && github.ref_name || format('Latest (v{0})', steps.pkg.outputs.version) }}
           files: ${{ steps.pkg.outputs.filename }}
           generate_release_notes: true
+          make_latest: ${{ github.ref_type != 'tag' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
