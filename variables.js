@@ -6,6 +6,8 @@ module.exports = function (self) {
 		{ variableId: 'last_error', name: 'Last Error Message' },
 		{ variableId: 'reconnect_attempts', name: 'Reconnection Attempts' },
 		{ variableId: 'auto_reconnect_enabled', name: 'Auto-Reconnect Enabled' },
+		{ variableId: 'volume_level', name: 'Volume: Level % (from Get Level)' },
+		{ variableId: 'volume_muted', name: 'Volume: Mute State (from Get/Toggle)' },
 	])
 
 	// Set initial variable values
@@ -16,5 +18,7 @@ module.exports = function (self) {
 		last_error: 'None',
 		reconnect_attempts: '0',
 		auto_reconnect_enabled: 'Yes',
+		volume_level: '',
+		volume_muted: '',
 	})
 }

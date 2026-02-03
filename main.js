@@ -169,15 +169,20 @@ class ModuleInstance extends InstanceBase {
 		}
 	}
 
-	// Make API call to KeyFree Companion
+	// Make API call to KeyFree Companion (returns true/false for success)
 	async makeApiCall(endpoint, method = 'POST', data = null) {
+		const result = await this.makeApiCallWithResponse(endpoint, method, data)
+		return result !== null
+	}
+
+	// Make API call and return response body as parsed JSON (or null on failure)
+	async makeApiCallWithResponse(endpoint, method = 'POST', data = null) {
 		if (!this.connected) {
 			this.log('warn', 'Not connected to KeyFree Companion')
-			// Try to reconnect if auto-reconnect is enabled and not already trying
 			if (this.config.auto_reconnect !== false && !this.reconnectInterval) {
 				this.startReconnection()
 			}
-			return false
+			return null
 		}
 
 		try {
@@ -188,26 +193,30 @@ class ModuleInstance extends InstanceBase {
 				},
 			}
 
-			if (data) {
+			if (data && method !== 'GET') {
 				options.body = JSON.stringify(data)
 			}
 
 			const response = await fetch(`${this.baseUrl}${endpoint}`, options)
-			
+
 			if (response.ok) {
 				this.log('debug', `API call successful: ${endpoint}`)
-				return true
+				const text = await response.text()
+				if (!text) return true
+				try {
+					return JSON.parse(text)
+				} catch {
+					return text
+				}
 			} else {
 				this.log('error', `API call failed: ${endpoint} - ${response.status}`)
-				// If API call fails, mark as disconnected and start reconnection
 				this.handleConnectionFailure(`API call failed: ${response.status}`)
-				return false
+				return null
 			}
 		} catch (error) {
 			this.log('error', `API call error: ${endpoint} - ${error.message}`)
-			// If API call fails, mark as disconnected and start reconnection
 			this.handleConnectionFailure(`API call error: ${error.message}`)
-			return false
+			return null
 		}
 	}
 
