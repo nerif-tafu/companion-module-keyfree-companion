@@ -57,5 +57,34 @@ module.exports = async function (self) {
 				return result.muted === true
 			},
 		},
+		volume_master_level: {
+			name: 'Volume Master Level',
+			type: 'advanced',
+			label: 'Master volume level',
+			options: [],
+			callback: async () => {
+				const result = await self.makeApiCallWithResponse('/api/volume/master', 'GET')
+				if (result == null || typeof result !== 'object') return {}
+				const vol = result.volume != null ? Math.round(Number(result.volume) * 100) : null
+				return {
+					text: vol != null ? `${vol}%` : '--',
+				}
+			},
+		},
+		volume_master_muted: {
+			name: 'Volume Master Muted',
+			type: 'boolean',
+			label: 'Master is muted',
+			defaultStyle: {
+				bgcolor: combineRgb(80, 80, 80),
+				color: combineRgb(255, 255, 255),
+			},
+			options: [],
+			callback: async () => {
+				const result = await self.makeApiCallWithResponse('/api/volume/master', 'GET')
+				if (result == null || typeof result !== 'object') return false
+				return result.muted === true
+			},
+		},
 	})
 }

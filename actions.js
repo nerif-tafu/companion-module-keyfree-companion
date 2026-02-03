@@ -361,5 +361,87 @@ module.exports = function (self) {
 				}
 			},
 		},
+
+		// --- Master volume actions ---
+
+		volume_master_set: {
+			name: 'Volume: Master Set Level',
+			options: [
+				{ id: 'volume', type: 'number', label: 'Volume (0–100 %)', default: 80, min: 0, max: 100 },
+			],
+			callback: async (event) => {
+				const vol = Math.min(100, Math.max(0, Number(event.options.volume))) / 100
+				const success = await self.makeApiCall('/api/volume/master/set', 'POST', { volume: vol })
+				if (success) {
+					self.setVariableValues({ last_action: `Volume: Master set to ${event.options.volume}%` })
+				}
+			},
+		},
+
+		volume_master_change: {
+			name: 'Volume: Master Change Level',
+			options: [
+				{
+					id: 'direction',
+					type: 'dropdown',
+					label: 'Direction',
+					default: 'increase',
+					choices: [
+						{ id: 'increase', label: 'Increase volume' },
+						{ id: 'decrease', label: 'Decrease volume' },
+					],
+				},
+				{ id: 'amount', type: 'number', label: 'Amount (0–1, default 0.1)', default: 0.1, min: 0, max: 1, step: 0.05 },
+			],
+			callback: async (event) => {
+				const endpoint =
+					event.options.direction === 'decrease' ? '/api/volume/master/down' : '/api/volume/master/up'
+				const amount = Number(event.options.amount)
+				const body = amount > 0 ? { amount } : {}
+				const success = await self.makeApiCall(endpoint, 'POST', body)
+				if (success) {
+					const dir = event.options.direction === 'decrease' ? 'Down' : 'Up'
+					self.setVariableValues({ last_action: `Volume: Master ${dir}` })
+				}
+			},
+		},
+
+		volume_master_mute: {
+			name: 'Volume: Master Mute',
+			options: [
+				{
+					id: 'mute_action',
+					type: 'dropdown',
+					label: 'Action',
+					default: 'toggle',
+					choices: [
+						{ id: 'toggle', label: 'Toggle' },
+						{ id: 'mute', label: 'Mute' },
+						{ id: 'unmute', label: 'Unmute' },
+					],
+				},
+			],
+			callback: async (event) => {
+				const action = event.options.mute_action || 'toggle'
+				if (action === 'toggle') {
+					const result = await self.makeApiCallWithResponse('/api/volume/master/toggle-mute', 'POST', {})
+					if (result != null && typeof result === 'object') {
+						const muted = result.muted === true ? 'Muted' : 'Unmuted'
+						self.setVariableValues({
+							last_action: `Volume: Master toggle mute → ${muted}`,
+							volume_master_muted: muted,
+						})
+					}
+				} else {
+					const endpoint = action === 'mute' ? '/api/volume/master/mute' : '/api/volume/master/unmute'
+					const success = await self.makeApiCall(endpoint, 'POST', null)
+					if (success) {
+						self.setVariableValues({
+							last_action: `Volume: Master ${action === 'mute' ? 'Mute' : 'Unmute'}`,
+						})
+					}
+				}
+			},
+		},
 	})
 }

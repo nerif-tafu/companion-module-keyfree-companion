@@ -8,6 +8,7 @@ module.exports = function (self) {
 		{ variableId: 'auto_reconnect_enabled', name: 'Auto-Reconnect Enabled' },
 		{ variableId: 'volume_level', name: 'Volume: Level % (from Get Level)' },
 		{ variableId: 'volume_muted', name: 'Volume: Mute State (from Get/Toggle)' },
+		{ variableId: 'volume_master_muted', name: 'Volume: Master Mute State (from Toggle)' },
 	])
 
 	// Set initial variable values
@@ -20,5 +21,6 @@ module.exports = function (self) {
 		auto_reconnect_enabled: 'Yes',
 		volume_level: '',
 		volume_muted: '',
+		volume_master_muted: '',
 	})
 }
